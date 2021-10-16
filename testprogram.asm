@@ -8,9 +8,9 @@ section .bss        ;Uninitialized data
     num resb 5      ;Variable num
 
 section .text       ;Code Segment
-    global main
+    global _start
 
-main:
+_start:
     ;User prompt
     mov eax, 4
     mov ebx, 1
