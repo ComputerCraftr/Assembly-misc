@@ -22,16 +22,16 @@
     %define SYS_EXIT 0x2000001
 %endif
 
+section .bss align=4
+    num resb 6                      ; Reserve 6 bytes (5 for data + 1 for null terminator)
+    maxInputLen equ ($ - num - 1)   ; Maximum number of input characters (buffer size - 1 for null terminator)
+
 section .data align=4
-    userMsg db 'Please enter a number (max 4 digits): ', 0xA
+    userMsg db 'Please enter a number (max ', '0'+maxInputLen, ' digits): ', 0xA
     lenUserMsg equ $ - userMsg
 
     dispMsg db 'You have entered: ', 0xA
     lenDispMsg equ $ - dispMsg
-
-section .bss align=4
-    num resb 6                      ; Reserve 6 bytes (5 for data + 1 for null terminator)
-    maxInputLen equ 5               ; Maximum number of bytes to read (4 digits + null terminator)
 
 section .text align=4
     global _start
@@ -102,7 +102,7 @@ _start:
     ; Display user input
     mov rcx, qword [handle]         ; Stdout handle
     lea rdx, [num]                  ; Address of the entered number
-    mov r8, 5                       ; Length of input (4 digits + null terminator)
+    mov r8, maxInputLen             ; Length of input (maxInputLen digits + null terminator)
     xor r9d, r9d                    ; No overlap
     call _WriteConsoleA@20          ; Call WriteConsoleA
 
