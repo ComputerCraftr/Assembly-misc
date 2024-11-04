@@ -82,7 +82,7 @@ _start:
     mov rsi, [rel buffer_size]      ; size from user input
     mov rdx, 0x3                    ; prot = PROT_READ | PROT_WRITE
     mov r10, 0x1002                 ; flags = MAP_PRIVATE | MAP_ANON
-    xor r8, r8                      ; fd = -1 (not used with MAP_ANON)
+    mov r8, -1                      ; fd = -1 (not used with MAP_ANON)
     xor r9, r9                      ; offset = 0
     syscall
 
